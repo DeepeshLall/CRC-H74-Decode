@@ -150,5 +150,46 @@ for i in range(len(DataList)):
 		inValidFrameSetid.append(FrameNumber)
 		FrameNumber+=1
 
-print(inValidFrameSetid)
-print(ValidFrameSet)
+inValidFramesNumber=","
+inValidFramesNumber = inValidFramesNumber.join(inValidFrameSetid)
+
+# print FrameCount #FrameNumber=FrameCount
+# print(inValidFrameSetid)
+# print(ValidFrameSet)
+
+##########################################REMOVING THE BYTE STUFFING AND READING ITS ASCII############################################
+# print("--------------------------REMOVING THE BYTE STUFFING AND READING ITS ASCII---------------------")
+
+def unstuff(dataList):
+	unstuffedData=[]
+	for itr in range(len(dataList)):
+		if dataList[itr] == ESC:
+			itr+=1
+			if dataList[itr] in xoredByteDictionary:
+				unstuffedData.append(xoredByteDictionary[itr])
+			else:
+				unstuffedData.append(ESC)
+				unstuffedData.append(dataList[itr])
+		else:
+			unstuffedData.append(dataList[itr])
+	return unstuffedData
+#making a list of valid data(i.e. without checksum) in Hexadecimal
+asciiData=[]
+for i in range(len(ValidFrameSet)):
+	DataStream = str(ValidFrameSet[i])
+	ValidHexData = [str(format(int((DataStream[i:i+ByteLength]),2),'#04x')) for i in range(0, len(DataStream)-ByteLength, ByteLength)]
+	unstuffedDataList=unstuff(ValidHexData)
+	for j in  range(len(unstuffedDataList)):
+		asciiData.append(str(chr(int(str(unstuffedDataList[j]),16))))
+# print ValidHexDataList
+asciiText=""
+asciiText = asciiText.join(asciiData)
+
+#############################################PRINTING OUTPUT#############################################
+
+print FrameCount
+print inValidFramesNumber
+print asciiText
+
+
+
