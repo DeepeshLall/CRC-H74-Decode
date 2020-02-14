@@ -38,8 +38,6 @@ for i in range(len(ByteStream)):
 			#If we found next Byte as ESC put it and next byte in Frame[]
 				Frame.append(ByteStream[i])
 				# print("Appending "+ByteStream[i]+" to Frame No.: "+FrameCount)
-				i+=1
-				Frame.append(ByteStream[i])
 				# print("Appending "+ByteStream[i]+" to Frame No.: "+FrameCount)
 			elif ByteStream[i] == FLAG: 
 			#If we found FLAG Not followed by ESC end Frame[]
@@ -148,14 +146,15 @@ for i in range(len(DataList)):
 		FrameNumber+=1
 	else:
 		inValidFrameSetid.append(FrameNumber)
+		# print (str(i+1)+"---> "+str(DataList[i]+ '0'*(len(KEY)-1)))
 		FrameNumber+=1
 
 inValidFramesNumber=","
-inValidFramesNumber = inValidFramesNumber.join(inValidFrameSetid)
+inValidFramesNumber = inValidFramesNumber.join(str(inValidFrameSetid))
 
 # print FrameCount #FrameNumber=FrameCount
-# print(inValidFrameSetid)
-# print(ValidFrameSet)
+# print inValidFrameSetid
+# print ValidFrameSet
 
 ##########################################REMOVING THE BYTE STUFFING AND READING ITS ASCII############################################
 # print("--------------------------REMOVING THE BYTE STUFFING AND READING ITS ASCII---------------------")
@@ -180,15 +179,19 @@ for i in range(len(ValidFrameSet)):
 	ValidHexData = [str(format(int((DataStream[i:i+ByteLength]),2),'#04x')) for i in range(0, len(DataStream)-ByteLength, ByteLength)]
 	unstuffedDataList=unstuff(ValidHexData)
 	for j in  range(len(unstuffedDataList)):
-		asciiData.append(str(chr(int(str(unstuffedDataList[j]),16))))
+		if(int(str(unstuffedDataList[j]),16) == 169):
+			print ("DEBUG")
+		else:
+			asciiData.append(str(chr(int(str(unstuffedDataList[j]),16))))
 # print ValidHexDataList
 asciiText=""
 asciiText = asciiText.join(asciiData)
 
-#############################################PRINTING OUTPUT#############################################
+############################################PRINTING OUTPUT#############################################
 
 print FrameCount
-print inValidFramesNumber
+# print inValidFramesNumber
+print inValidFrameSetid
 print asciiText
 
 
