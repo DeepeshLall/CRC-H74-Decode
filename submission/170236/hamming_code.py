@@ -117,5 +117,5 @@ with open(filename, 'r') as f:
 		asciiText = asciiText.join(DecodeMessage)
 		print(asciiText)
 		print(str(int((float(no_of_corruptedMessage)/total_no_of_message*100.0)))+' %')
-		# print()
+		print()
 		line = f.readline()
