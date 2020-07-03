@@ -1,4 +1,4 @@
-#CRC Checksum-Hamming Network Binary Decoder
+# CRC Checksum-Hamming Network Binary Decoder
 
 This repository is for COMPUTER NETWORK CS425 course purpose.
 
